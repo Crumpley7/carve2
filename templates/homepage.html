@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seam Carving Website</title>
+    <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
+</head>
+<body>
+    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+        <h1>Carving Seams and Making Dreams!</h1>
+        <p>Input your image! Make sure it's a .jpg file. If it's not, you can convert it.</p>
+        <label for="file">Choose image:</label>
+        <input type="file" id="file" name="file" accept="image/*" required> <br><br>
+        <p>Do you want to cut it vertically (column) or horizontally (rows)?</p>
+        <label for="axis">Axis:</label>
+        <select id="axis" name="axis" required>
+            <option value="c">Columns</option>
+            <option value="r">Rows</option>
+        </select><br><br>
+        <p>How much do you cut the image? 0.1 preserves 10% of the image and 100% preserves the entire image.</p>
+        <label for="scale">Scale (0.1 to 1.0):</label>
+        <input type="number" id="scale" name="scale" step="0.1" min="0.1" max="1.0" required><br><br><br>
+        <button type="submit">Upload and Process the Image</button>
+        <p>Please be patient. Image processing times vary drastically depending on quality. The bigger the image, the longer it will take to cut.</p>
+    </form>
+</body>
+</html>
