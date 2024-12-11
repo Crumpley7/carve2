@@ -1,0 +1,4 @@
+{
+    "builds": [{ "src": "seamcarving3.py", "use": "@vercel/python"}],
+    "routes": [{ "src": "/(.*)", "dest": "seamcarving3.py" }]
+}

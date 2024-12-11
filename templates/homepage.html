@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
 </head>
 <body>
-    <form id="upload-form" action="/upload" method="post" enctype="multipart/form-data">
+    <form id="seaminputform">
         <h1>Carving Seams and Making Dreams!</h1>
         <p>Input your image! Make sure it's a .jpg file. If it's not, you can convert it.</p>
         <label for="file">Choose image:</label>
@@ -19,8 +19,17 @@
         <p>How much do you cut the image? 0.1 preserves 10% of the image and 100% preserves the entire image.</p>
         <label for="scale">Scale (0.1 to 1.0):</label>
         <input type="number" id="scale" name="scale" step="0.1" min="0.1" max="1.0" required><br><br><br>
-        <button type="submit">Upload and Process the Image</button>
+        <button type="button" onsubmit="submitMe(e)">Upload and Process the Image</button>
         <p>Please be patient. Image processing times vary drastically depending on quality. The bigger the image, the longer it will take to cut.</p>
     </form>
+    <div id="output"></div>
+    <script type="text/javascript">
+        let inputForm= document.getElementById('seaminputform');
+        inputForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            let out = document.getElementById('output');
+            out.innerHTML('Done');
+        });
+    </script>
 </body>
 </html>
