@@ -1,7 +1,7 @@
 /* General body styling */
 body {
     font-family: Arial, sans-serif;
-    background-color: #afdcffb9;
+    background-color: #f8f8f8b9;
     margin: 0;
     padding: 0;
     display: flex;
@@ -13,7 +13,7 @@ body {
 /* Container for the form */
 form {
     background: #ffffff;
-    border-radius: 0px;
+    border: 100px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     padding: 200px;
     width: 100%;

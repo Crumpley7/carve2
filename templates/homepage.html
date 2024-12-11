@@ -1,35 +1,86 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Seam Carving Website</title>
+    <title>Seam Carving App</title>
     <link rel="stylesheet" type="text/css" href="/static/mainpage.css">
 </head>
 <body>
-    <form id="seaminputform">
+    <div>
+    <form id="upload-form" method="post" enctype="multipart/form-data">
         <h1>Carving Seams and Making Dreams!</h1>
-        <p>Input your image! Make sure it's a .jpg file. If it's not, you can convert it.</p>
+        <p>Input your image! Make sure it's a .jpg file.</p>
         <label for="file">Choose image:</label>
-        <input type="file" id="file" name="file" accept="image/*" required> <br><br>
+        <input type="file" id="file" name="file" accept="image/*" required><br><br>
         <p>Do you want to cut it vertically (column) or horizontally (rows)?</p>
         <label for="axis">Axis:</label>
         <select id="axis" name="axis" required>
             <option value="c">Columns</option>
             <option value="r">Rows</option>
         </select><br><br>
-        <p>How much do you want to cut the image? 0.1 preserves 10% of the image and 100% preserves the entire image.</p>
+        <p>How much do you want to cut down the image? <br> <br>0.1 preserves 10% of the image. <br> 1 preserves the entire image.</p>
         <label for="scale">Scale (0.1 to 1.0):</label>
-        <input type="number" id="scale" name="scale" step="0.1" min="0.1" max="1.0" required><br><br><br>
-        <button type="button" onsubmit="submitMe(e)">Upload and Process the Image</button>
-        <p>Please be patient. Image processing times vary drastically depending on quality. The bigger the image, the longer it will take to cut.</p>
+        <input type="number" id="scale" name="scale" step="0.1" min="0.1" max="1.0" required><br><br>
+        <button type="button" id="process-button">Upload and Process Image</button>
+        <p>Please be patient!<br> Image processing times vary drastically depending on image quality. <br><br> Scroll down to see your image!</p>
     </form>
-    <div id="output"></div>
-    <script type="text/javascript">
-        let inputForm= document.getElementById('seaminputform');
-        inputForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-            let out = document.getElementById('output');
-            out.innerHTML('Done');
+
+    <div id="progress-container" style="margin-top: 20px; display: none;">
+        <h2>Processing Image...</h2>
+        <div id="progress-bar" style="width: 100%; background-color: #f3f3f3; border: 1px solid #ccc; height: 25px; border-radius: 5px;">
+            <div id="progress" style="width: 0%; height: 100%; background-color: #000000; border-radius: 5px;"></div>
+        </div>
+    </div>
+
+    <div id="output-container" style="margin-top: 20px; display: none;">
+        <h2>Processed Image</h2>
+        <img id="output-image" alt="Processed Image" style="max-width: 100%; border: 1px solid #ccc; padding: 10px;">
+    </div>
+</div>
+    <script>
+        document.getElementById('process-button').addEventListener('click', async function () {
+            const form = document.getElementById('upload-form');
+            const formData = new FormData(form);
+            const progressBar = document.getElementById('progress');
+            const progressContainer = document.getElementById('progress-container');
+            const outputContainer = document.getElementById('output-container');
+            const outputImage = document.getElementById('output-image');
+
+            // Show the progress bar
+            progressBar.style.width = '0%';
+            progressContainer.style.display = 'block';
+            outputContainer.style.display = 'none';
+
+            try {
+                const response = await fetch('/upload', {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    alert('Error processing the image.');
+                    progressContainer.style.display = 'none'; // Hide progress bar on error
+                    return;
+                }
+
+                // Simulate progress for the loading bar
+                for (let i = 0; i <= 100; i++) {
+                    await new Promise(resolve => setTimeout(resolve, 10)); // Simulate loading time
+                    progressBar.style.width = i + '%';
+                }
+
+                // Get the processed image and display it
+                const blob = await response.blob();
+                outputImage.src = URL.createObjectURL(blob);
+                outputContainer.style.display = 'block';
+
+                // Hide the progress bar once done
+                progressContainer.style.display = 'none';
+            } catch (error) {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+                progressContainer.style.display = 'none'; // Hide progress bar on error
+            }
         });
     </script>
 </body>
-</html>
+</html> 
